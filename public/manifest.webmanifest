@@ -1,0 +1,27 @@
+{
+  "name": "S.A.D. Food Delivery",
+  "short_name": "S.A.D. Food",
+  "description": "Доставка еды, которая делает тебя счастливым",
+  "start_url": "/",
+  "id": "/",
+  "display": "standalone",
+  "background_color": "#0a0a0a",
+  "theme_color": "#0a0a0a",
+  "orientation": "portrait-primary",
+  "scope": "/",
+  "icons": [
+    {
+      "src": "https://sun9-34.userapi.com/s/v1/ig2/ex1iMwk0BwBqv7hkRFakueWt1E0LSL9B0ptCugd7c2Om44o4cPz_6G1E2KEs7sLQhZXDPBzPFdHZSdIx6x3GJbzE.jpg",
+      "sizes": "512x512",
+      "type": "image/jpeg",
+      "purpose": "any"
+    },
+    {
+      "src": "https://sun9-34.userapi.com/s/v1/ig2/ex1iMwk0BwBqv7hkRFakueWt1E0LSL9B0ptCugd7c2Om44o4cPz_6G1E2KEs7sLQhZXDPBzPFdHZSdIx6x3GJbzE.jpg",
+      "sizes": "512x512",
+      "type": "image/jpeg",
+      "purpose": "maskable"
+    }
+  ],
+  "categories": ["food", "delivery", "shopping"]
+}

@@ -1,0 +1,142 @@
+# backend/prisma/schema.prisma
+// ============================================
+// 🗄️ PRISMA SCHEMA FOR PRODUCTION
+// ============================================
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ============================================
+// USER MODEL
+// ============================================
+model User {
+  id        String    @id @default(uuid())
+  email     String    @unique
+  password  String
+  name      String
+  phone     String?
+  role      String    @default("user")
+  addresses Address[]
+  orders    Order[]
+  favorites Int[]     @default([])
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  @@index([email])
+  @@index([role])
+}
+
+// ============================================
+// ADDRESS MODEL
+// ============================================
+model Address {
+  id        String   @id @default(uuid())
+  userId    String
+  title     String
+  city      String
+  street    String
+  house     String
+  apartment String?
+  floor     String?
+  entrance  String?
+  intercom  String?
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId])
+}
+
+// ============================================
+// ORDER MODEL
+// ============================================
+model Order {
+  id              String   @id @default(uuid())
+  userId          String
+  items           Json
+  total           Int
+  status          String   @default("processing")
+  deliveryAddress String
+  paymentMethod   String
+  customerPhone   String?
+  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@index([userId])
+  @@index([status])
+  @@index([createdAt])
+}
+
+// ============================================
+// PRODUCT MODEL
+// ============================================
+model Product {
+  id          Int      @id @default(autoincrement())
+  name        String
+  description String
+  price       Int
+  image       String
+  category    String
+  badge       String?
+  weight      String?
+  calories    Int?
+  proteins    Float?
+  fats        Float?
+  carbs       Float?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([category])
+  @@index([price])
+  @@index([badge])
+}
+
+// ============================================
+// CATEGORY MODEL
+// ============================================
+model Category {
+  id        String   @id @default(uuid())
+  name      String   @unique
+  slug      String   @unique
+  icon      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([slug])
+}
+
+// ============================================
+// DELIVERY SETTINGS MODEL
+// ============================================
+model DeliverySettings {
+  id                    Int      @id @default(autoincrement())
+  freeDeliveryThreshold Int      @default(1000)
+  deliveryFee           Int      @default(200)
+  estimatedTime         String   @default("30-45 мин")
+  isDeliveryEnabled     Boolean  @default(true)
+  updatedAt             DateTime @updatedAt
+}
+
+// ============================================
+// EMAIL SETTINGS MODEL
+// ============================================
+model EmailSettings {
+  id                     Int      @id @default(autoincrement())
+  adminEmail             String
+  senderName             String   @default("S.A.D. Food Delivery")
+  smtpHost               String
+  smtpPort               Int
+  smtpUser               String
+  smtpPass               String
+  useSSL                 Boolean  @default(true)
+  notificationOnNewOrder Boolean  @default(true)
+  welcomeEmailEnabled    Boolean  @default(true)
+  updatedAt              DateTime @updatedAt
+}
